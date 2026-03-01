@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from billing_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('',views.billing_page,name='billing_form'),
+    path('generatebill/',views.generate_bill,name='generate_bill'),
+    path('purchases/',views.customer_purchases,name='customer_purchases'),
+]   
