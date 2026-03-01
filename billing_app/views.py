@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from billing_app.models import Product,Purchase,PurchaseItem
 from billing_app.tasks import send_invoice_confirmation_mail
+from billing_system_project.services import process_bill
 
 # Create your views here.
 
@@ -16,7 +17,7 @@ def generate_bill(request):
         product_ids = request.POST.getlist("product_id")
         quantities = request.POST.getlist("quantity")
         
-        products = {}
+        products = []
         for product in range(len(product_ids)):
             products.append(
                 {
@@ -25,16 +26,22 @@ def generate_bill(request):
                  }
             )
 
-        send_invoice_confirmation_mail.delay(products,email)
+        denominations = {}
+        for key in request.POST:
+            if key.startswith('denom_'):
+                denom_value = key.split('_')[1]
+                denominations[denom_value] = request.POST[key]
 
-    return render(request,'generate_bill_result.html')
+        purchase, distribution = process_bill(email, products, paid_amount, denominations)
+        send_invoice_confirmation_mail.delay(products,email,denominations)
+
+    return render(request,'generate_bill_result.html',{'purchase': purchase, 'distribution': distribution})
 
 def customer_purchases(request):
     email = request.GET.get('email')
     purchases = Purchase.objects.filter(customer_email = email)
-    return render(request,'purchase_list.html',{'purchases': purchases})
+    return render(request,'purchase_list.html',{'purchases': purchases,'email':email})
 
 def purchase_detail(request, pk):
-    purchase = Purchase.objects.get(id=pk)
-    purchase_items = PurchaseItem.objects.filter(purchase=purchase)
-    return render(request,'purchase_detail.html',{'purchase': purchase, 'purchase_items': purchase_items})
+    purchase = get_object_or_404(Purchase,pk=pk)    
+    return render(request,'purchase_detail.html',{'purchase': purchase, 'distribution': {}})
