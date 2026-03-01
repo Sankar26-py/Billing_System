@@ -1,11 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase List</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Purchase List</h1>
+    <div class="container">
+        <h2>Purchase List</h2>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Net Price</th>
+                <th>Action</th>
+            </tr>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.id }}</td>
+                <td>{{ purchase.created_at }}</td>
+                <td>{{ purchase.net_price }}</td>
+                <td>
+                    <a href="{% url 'purchase_detail' purchase.id %}">
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 </html>

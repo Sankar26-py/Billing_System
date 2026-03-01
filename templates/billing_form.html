@@ -1,11 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Billing Form</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
-    <h1>Billing Form</h1>
+    <div class="container">
+        <h2>Billing Form</h2>
+        <form method="post" action="{% url 'generate_bill' %}">
+            {% csrf_token %}
+            <label>Customer Email:</label>
+            <input type="email" name="customer_email" required>
+            <div class="section-title">Bill Section</div>
+            <div id="products">
+                <div>
+                    <input type="text" name="product_id" placeholder="Product ID" required>
+                    <input type="number" name="quantity" placeholder="Quantity" required>
+                </div>
+            </div>
+            <button type="button" onclick="addRow()">Add New</button>
+            <hr>
+            <div class="section-title">Denominations</div>
+            {% for value in denominations %}
+                {{ value }}
+                <input type="number" name="denom_{{ value }}" value="0"><br>
+            {% endfor %}
+            <label>Cash Paid:</label>
+            <input type="number" step="0.01" name="paid_amount" required>
+            <button type="submit">Generate Bill</button>
+        </form>
+    </div>
+    <script src="{% static 'js/billing.js' %}"></script>
 </body>
 </html>

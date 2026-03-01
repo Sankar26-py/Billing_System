@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Generated Bill Result</h2>
+        <p><strong>Customer:</strong> {{ purchase.customer_email }}</p>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Tax %</th>
+            </tr>
+            {% for item in purchase.items.all %}
+            <tr>
+                <td>{{ item.product.product_id }}</td>
+                <td>{{ item.unit_price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.tax_percentage }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="summary">
+            <p>Total Without Tax: {{ purchase.total_without_tax }}</p>
+            <p>Total Tax: {{ purchase.total_tax }}</p>
+            <p><strong>Net Price: {{ purchase.net_price }}</strong></p>
+            <p>Rounded Net Price: {{ purchase.rounded_net_price }}</p>
+            <p><strong>Balance Returned: {{ purchase.balance_amount }}</strong></p>
+        </div>
+        <hr>
+        <h4>Denomination Breakdown</h4>
+        {% for value, count in distribution.items %}
+        {{ value }} : {{ count }} <br>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -117,7 +117,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR / "templates"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0" 
 
