@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Purchase History</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -21,8 +22,8 @@
                 <td>{{ purchase.created_at }}</td>
                 <td>{{ purchase.net_price }}</td>
                 <td>
-                    <a href="{% url 'purchase_detail' purchase.id %}">
-                        View
+                    <a href="{% url 'customer_purchases' %}?email={{ purchase.customer_email }}">
+                        View All Purchases
                     </a>
                 </td>
             </tr>

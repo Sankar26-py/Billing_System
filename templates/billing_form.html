@@ -3,13 +3,20 @@
 <html>
 
 <head>
-    <title>Billing Form</title>
+    <title>Billing Page</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
     <div class="container">
-        <h2>Billing Form</h2>
+        <h2>Billing Page</h2>
+        {% if messages %}
+        {% for message in messages %}
+        <div style="color: red; margin-bottom: 10px;">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <form method="post" action="{% url 'generate_bill' %}">
             {% csrf_token %}
             <label>Customer Email:</label>
@@ -25,8 +32,8 @@
             <hr>
             <div class="section-title">Denominations</div>
             {% for value in denominations %}
-                {{ value }}
-                <input type="number" name="denom_{{ value }}" value="0"><br>
+            {{ value }}
+            <input type="number" name="denom_{{ value }}" value="0"><br>
             {% endfor %}
             <label>Cash Paid:</label>
             <input type="number" step="0.01" name="paid_amount" required>
@@ -35,4 +42,5 @@
     </div>
     <script src="{% static 'js/billing.js' %}"></script>
 </body>
+
 </html>

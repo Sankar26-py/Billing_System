@@ -2,12 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Generated Bill Result</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="container">
         <h2>Generated Bill Result</h2>
         <p><strong>Customer:</strong> {{ purchase.customer_email }}</p>
+        <a href="{% url 'customer_purchases' %}?email={{ purchase.customer_email }}">
+            View All Purchases
+        </a>
         <table>
             <tr>
                 <th>Product</th>
