@@ -76,10 +76,8 @@ ASYNC EMAIL SETUP (CELERY + REDIS):
 Step 2: Start Celery Worker (Windows)
 
   Run:
-  celery -A billing_system worker --loglevel=info --pool=solo
-  
-  If your project name is billing_system_project, run:
   celery -A billing_system_project worker --loglevel=info --pool=solo
+
 
 ---
 
